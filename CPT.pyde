@@ -1,5 +1,7 @@
 def setup():
-    size(100, 100)
+    fullScreen()
 
 def draw():
     background('#ff0000')
+    
+    
