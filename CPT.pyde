@@ -1,7 +1,7 @@
 class snake:
     def __init__(self, x, y, colour):
-        self.x = [(s * 10) for s in x]
-        self.y = [(s *10) + 50 for s in y]
+        self.x = [(s - 1) * 10 for s in x]
+        self.y = [(s - 1) * 10 + 50 for s in y]
         self.colour = colour
     def draw_snake(self):
         fill(self.colour)
@@ -10,7 +10,7 @@ class snake:
                 rect(x, y, pixelsize, pixelsize)
 
 snake1 = snake([2, 2, 2], [2, 3, 4], '#ff0000')
-snake2 = snake([48, 48, 48], [48, 47, 46], '#0000ff')
+snake2 = snake([49, 49, 49], [49, 48, 47], '#0000ff')
 
 def setup():
     global pixelsize
