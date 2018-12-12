@@ -30,6 +30,16 @@ def draw_title():
     textSize(100)
     textAlign(CENTER)
     text("SNAKES", width/2, height/3)
+
+# Mode    
+def draw_timed_mode():
+    fill(0)
+    textSize(15)
+    text("timed mode", width/2, height/2 + 20)
+def draw_elimination_mode():
+    fill(0)
+    textSize(15)
+    text("elimination mode", width/2, height/2 + 140)
     
 def setup():
 # Screen size
@@ -40,7 +50,9 @@ def draw():
     background(0)
     draw_title()
     draw_button_timed(width/2 - 50, height/2, 100, 40, )
-    draw_button_elimination(width/2 - 50, height/2 + 120, 100, 40)
+    draw_button_elimination(width/2 - 70, height/2 + 120, 140, 40)
+    draw_timed_mode()
+    draw_elimination_mode()
     
     if mousePressed:
         background(255)
