@@ -1,10 +1,8 @@
 screen = 'title'
 
-# Button colour
 hover_clr='#ff0000'
 button_normal=255
 
-# Button timed
 def draw_button_timed(x, y, w, h):
     if mouse_in_button(x, y, w, h):
         noStroke()
@@ -18,7 +16,6 @@ def draw_button_timed(x, y, w, h):
     textSize(15)
     text("timed mode", width/2, height/2 + 20)
 
-# Button elimination
 def draw_button_elimination(x, y, w, h):
     if mouse_in_button(x, y, w, h):
         noStroke()
@@ -35,7 +32,6 @@ def draw_button_elimination(x, y, w, h):
 def mouse_in_button(x, y, w, h):
     return mouseX > x and mouseX < x + w and mouseY > y and mouseY < y + h
 
-# Tittle
 def draw_title():
     fill("#ff0000")
     textSize(100)
@@ -43,7 +39,6 @@ def draw_title():
     text("SNAKES", width/2, height/3)
 
 def setup():
-# Screen size
     size(500, 550)
 
 def draw():
@@ -59,7 +54,6 @@ def draw():
             
         if screen == 'slimination':
             background(0)
-    
     
 def mouseClicked():
     global screen
