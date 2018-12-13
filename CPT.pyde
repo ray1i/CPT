@@ -3,7 +3,6 @@ gridy = 50
 hover_clr='#ff0000'
 button_normal=255
 
-# Button elimination
 def draw_button(x, y, w, h, words):
     noStroke()
     if mouse_in_button(x, y, w, h):
@@ -20,7 +19,6 @@ def draw_button(x, y, w, h, words):
 def mouse_in_button(x, y, w, h):
     return x - w/2 < mouseX < x + w/2 and y - h/2 < mouseY < y + h/2
 
-# Title
 def draw_title():
     fill("#ff0000")
     textSize(100)
