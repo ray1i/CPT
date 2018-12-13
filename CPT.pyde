@@ -3,36 +3,22 @@ gridy = 50
 hover_clr='#ff0000'
 button_normal=255
 
-# Button timed
-def draw_button_timed(x, y, w, h):
-    if mouse_in_button(x, y, w, h):
-        noStroke()
-        fill(hover_clr)
-        rect(x, y, w, h, 100)
-    else: 
-        noStroke()
-        fill(button_normal)
-        rect(x, y, w, h, 100)
-    fill(0)
-    textSize(15)
-    text("timed mode", width/2, height/2 + 20)
-
 # Button elimination
-def draw_button_elimination(x, y, w, h):
+def draw_button(x, y, w, h, words):
+    noStroke()
     if mouse_in_button(x, y, w, h):
-        noStroke()
         fill(hover_clr)
-        rect(x, y, w, h, 100)
     else:
-        noStroke()
         fill(button_normal)
-        rect(x, y, w, h, 100)
+    rectMode(CENTER)
+    textAlign(CENTER, BOTTOM)
+    rect(x, y, w, h, 100)
     fill(0)
     textSize(15)
-    text("elimination mode", width/2, height/2 + 140)
+    text(words, x, y)
 
 def mouse_in_button(x, y, w, h):
-    return mouseX > x and mouseX < x + w and mouseY > y and mouseY < y + h
+    return x - w/2 < mouseX < x + w/2 and y - h/2 < mouseY < y + h/2
 
 # Title
 def draw_title():
@@ -71,8 +57,8 @@ def draw():
     if screen == 'title':
         background(0)
         draw_title()
-        draw_button_timed(width/2 - 50, height/2, 100, 40)
-        draw_button_elimination(width/2 - 70, height/2 + 120, 140, 40)
+        draw_button(width/2, height/2, 100, 40, 'timed')
+        draw_button(width/2, height/2 + 120, 140, 40, 'elimination')
     else:
         background(0)
         snake1.draw_snake()
