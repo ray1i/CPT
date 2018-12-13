@@ -1,6 +1,6 @@
 gridx = 50
 gridy = 50
-pixelsize = 10
+pixelsize = 20
 hover_clr='#ff0000'
 button_normal=255
 
@@ -36,9 +36,8 @@ class snake:
         fill(self.colour)
         stroke(0)
         rectMode(CORNER)
-        for x in self.x:
-            for y in self.y:
-                rect(x, y, pixelsize, pixelsize)
+        for i in range(len(self.x)):
+            rect(self.x[i], self.y[i], pixelsize, pixelsize)
     def move(self):
         if frameCount % 30 == 0:
             del self.x[0]
