@@ -11,7 +11,7 @@ def draw_button(x, y, w, h, words):
     else:
         fill(button_normal)
     rectMode(CENTER)
-    textAlign(CENTER, BOTTOM)
+    textAlign(CENTER, CENTER)
     rect(x, y, w, h, 100)
     fill(0)
     textSize(15)
@@ -65,7 +65,7 @@ def draw():
         snake2.draw_snake()
         if screen == 'timed':
             pass
-        if screen == 'slimination':
+        if screen == 'elimination':
             pass
 
 def mouseClicked():
@@ -75,4 +75,3 @@ def mouseClicked():
             screen = 'timed'
         if mouse_in_button(width/2 - 70, height/2 + 120, 140, 40):
             screen = 'elimination'
-
