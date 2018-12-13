@@ -54,8 +54,13 @@ def draw():
         draw_button_timed(width/2 - 50, height/2, 100, 40)
         draw_button_elimination(width/2 - 70, height/2 + 120, 140, 40)
     else:
-        background('#ff0000')
-
+        if screen == 'timed':
+            background(0)
+            
+        if screen == 'slimination':
+            background(0)
+    
+    
 def mouseClicked():
     global screen
     if screen == 'title':
