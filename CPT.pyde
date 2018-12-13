@@ -39,7 +39,7 @@ class snake:
         for i in range(len(self.x)):
             rect(self.x[i], self.y[i], pixelsize, pixelsize)
     def move(self):
-        if frameCount % 30 == 0:
+        if frameCount % 10 == 0:
             del self.x[0]
             del self.y[0]
             if self.dir == 'up':
