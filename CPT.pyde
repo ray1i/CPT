@@ -1,6 +1,6 @@
 gridx = 50
 gridy = 50
-pixelsize = 20
+pixelsize = 10
 hover_clr='#ff0000'
 button_normal=255
 
@@ -14,14 +14,14 @@ def draw_button(x, y, w, h, words):
     textAlign(CENTER, CENTER)
     rect(x, y, w, h, 100)
     fill(0)
-    textSize(15)
+    textSize(50)
     text(words, x, y)
 
 def mouse_in(x, y, w, h):
     return x - w/2 < mouseX < x + w/2 and y - h/2 < mouseY < y + h/2
 
 def draw_title():
-    fill("#ff0000")
+    fill(255)
     textSize(100)
     textAlign(CENTER)
     text("SNAKES", width/2, height/3)
@@ -73,15 +73,14 @@ def draw():
     if screen == 'title':
         background(0)
         draw_title()
-        draw_button(width/2, height/2, 100, 40, 'timed')
-        draw_button(width/2, height/2 + 120, 140, 40, 'elimination')
+        draw_button(width/2, height/2, 400, 100, 'TIMED')
+        draw_button(width/2, height/2 + 120, 400, 100, 'ELIMINATION')
     else:
         background(0)
         snake1.draw_snake()
         snake2.draw_snake()
         snake1.move()
         snake2.move()
-        print(snake1.x, snake1.y)
         if screen == 'timed':
             pass
         if screen == 'elimination':
@@ -90,9 +89,9 @@ def draw():
 def mouseClicked():
     global screen
     if screen == 'title':
-        if mouse_in(width/2, height/2, 100, 40):
+        if mouse_in(width/2, height/2, 400, 100):
             screen = 'timed'
-        if mouse_in(width/2, height/2 + 120, 140, 40):
+        if mouse_in(width/2, height/2 + 120, 400, 100):
             screen = 'elimination'
 
 def keyPressed():
