@@ -6,7 +6,7 @@ button_normal=255
 
 def draw_button(x, y, w, h, words):
     noStroke()
-    if mouse_in_button(x, y, w, h):
+    if mouse_in(x, y, w, h):
         fill(hover_clr)
     else:
         fill(button_normal)
@@ -17,7 +17,7 @@ def draw_button(x, y, w, h, words):
     textSize(15)
     text(words, x, y)
 
-def mouse_in_button(x, y, w, h):
+def mouse_in(x, y, w, h):
     return x - w/2 < mouseX < x + w/2 and y - h/2 < mouseY < y + h/2
 
 def draw_title():
@@ -40,7 +40,9 @@ class snake:
             for y in self.y:
                 rect(x, y, pixelsize, pixelsize)
     def move(self):
-        if frameCount % 60 == 0:
+        if frameCount % 30 == 0:
+            del self.x[0]
+            del self.y[0]
             if self.dir == 'up':
                 self.x.append(self.x[-1])
                 self.y.append(self.y[-1] - pixelsize)
@@ -53,8 +55,7 @@ class snake:
             if self.dir == 'right':
                 self.x.append(self.x[-1] + pixelsize)
                 self.y.append(self.y[-1])
-            del self.x[0]
-            del self.y[0]
+
 
 def reset_snake1():
     return snake([2, 2, 2], [2, 3, 4], '#ff0000', 'down')
@@ -77,10 +78,11 @@ def draw():
         draw_button(width/2, height/2 + 120, 140, 40, 'elimination')
     else:
         background(0)
-        snake1.move()
-        snake2.move()
         snake1.draw_snake()
         snake2.draw_snake()
+        snake1.move()
+        snake2.move()
+        print(snake1.x, snake1.y)
         if screen == 'timed':
             pass
         if screen == 'elimination':
@@ -89,7 +91,28 @@ def draw():
 def mouseClicked():
     global screen
     if screen == 'title':
-        if mouse_in_button(width/2, height/2, 100, 40):
+        if mouse_in(width/2, height/2, 100, 40):
             screen = 'timed'
-        if mouse_in_button(width/2, height/2 + 120, 140, 40):
+        if mouse_in(width/2, height/2 + 120, 140, 40):
             screen = 'elimination'
+
+def keyPressed():
+    global snake1, snake2
+    if key == 'w' or key == 'W':
+        snake1.dir = 'up'
+    if key == 's' or key == 'S':
+        snake1.dir = 'down'
+    if key == 'a' or key == 'A':
+        snake1.dir = 'left'
+    if key == 'd' or key == 'D':
+        snake1.dir = 'right'
+    if keyCode == UP:
+        snake2.dir = 'up'
+    if keyCode == DOWN:
+        snake2.dir = 'down'
+    if keyCode == LEFT:
+        snake2.dir = 'left'
+    if keyCode == RIGHT:
+        snake2.dir = 'right'
+
+
