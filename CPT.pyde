@@ -14,7 +14,7 @@ def draw_button(x, y, w, h, words):
     textAlign(CENTER, CENTER)
     rect(x, y, w, h, 100)
     fill(0)
-    textSize(50)
+    textSize(h / 2)
     text(words, x, y)
 
 def mouse_in(x, y, w, h):
