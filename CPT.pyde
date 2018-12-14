@@ -4,8 +4,8 @@ gridx = 50
 gridy = 50
 pixelsize = 10
 hud_height = (gridx * pixelsize) / 10
-hover_clr='#ff0000'
-button_normal=255
+button_normal = 255
+hover_clr = 200
 
 def draw_button(x, y, w, h, words):
     noStroke()
@@ -82,7 +82,6 @@ class food:
     def make_food(self):
         self.x = random.randint(0, gridx) * pixelsize
         self.y = random.randint(0, gridy) * pixelsize + hud_height
-
 food = food(random.randint(0, gridx) * pixelsize, random.randint(0, gridy) * pixelsize + hud_height)
 
 def reset_snake1():
@@ -90,6 +89,16 @@ def reset_snake1():
 def reset_snake2():
     return snake([gridx - 1, gridx - 1, gridx - 1], [gridy - 1, gridy - 2, gridy - 3], '#0000ff', 'up', 0)
 
+def draw_hud():
+    fill(255)
+    rect(0, 0, width, hud_height)
+    
+    fill(0)
+    textSize(hud_height)
+    textAlign(LEFT, CENTER)
+    text(snake1.score, 0, hud_height / 2)
+    textAlign(RIGHT, CENTER)
+    text(snake2.score, width, hud_height / 2)
 
 def setup():
     global snake1, snake2, screen
@@ -106,7 +115,6 @@ def draw():
         draw_button(width/2, height/2, 400, 100, 'TIMED')
         draw_button(width/2, height/2 + 120, 400, 100, 'ELIMINATION')
     elif screen == 'end':
-        background(0)
         draw_button(width/2, height/2 + 100, 400, 100, 'NEW GAME')
         fill(255)
         textSize(40)
@@ -118,28 +126,19 @@ def draw():
         snake2.draw_snake()
         snake1.move()
         snake2.move()
+        draw_hud()
         if screen == 'timed':
             time = frameCount // 60
             fill(255)
             rect(0, 0, 150, hud_height)
             rect(150, 0, 200, hud_height)
             rect(350, 0, 150, hud_height)
-            fill("#ff0000")
-            textSize(20)
-            text("score : {}".format(snake1.score), 75,20)
-            text("score : {}".format(snake2.score), 425,20)
             textSize(40)
             text("{}:{}".format((180 - time)/60, (180 - time)%60), width/2, 20)
             if (180 - time)/60 <= 0 and (180 - time)%60 <= 0:
                 screen = 'end'
         if screen == 'elimination':
-            fill(255)
-            rect(0, 0, 250, hud_height)
-            rect(250, 0, 250, hud_height)
-            fill("#ff0000")
-            textSize(20)
-            text("score : {}".format(snake1.score), width/4,20)
-            text("score : {}".format(snake2.score), width*3/4,20)
+            pass
 
 def mouseClicked():
     global screen
@@ -150,7 +149,7 @@ def mouseClicked():
             screen = 'elimination'
     elif screen == 'end':
         if mouse_in(width/2, height/2 + 100, 400, 100):
-            screen = 'tittle'
+            screen = 'title'
 
 def keyPressed():
     global snake1, snake2
