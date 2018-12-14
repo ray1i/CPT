@@ -148,9 +148,9 @@ def mouseClicked():
             screen = 'timed'
         if mouse_in(width/2, height/2 + 120, 400, 100):
             screen = 'elimination'
-        elif screen == 'end':
-    if mouse_in(width/2, height/2 + 100, 400, 100):
-        screen = 'tittle'
+    elif screen == 'end':
+        if mouse_in(width/2, height/2 + 100, 400, 100):
+            screen = 'tittle'
 
 def keyPressed():
     global snake1, snake2
