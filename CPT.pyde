@@ -68,6 +68,16 @@ class snake:
                 else:
                     self.x.append(self.x[-1] + pixelsize)
 
+class dot:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+    def draw_dot(self):
+        fill(255)
+        rectMode(CORNER)
+        rect(x, y, pixelsize, pixelsize)
+    def make_dot(self):
+        self.x = 
 
 def reset_snake1():
     return snake([2, 2, 2], [2, 3, 4], '#ff0000', 'down', 0)
