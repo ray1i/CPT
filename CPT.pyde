@@ -27,11 +27,12 @@ def draw_title():
     text("SNAKES", width/2, height/3)
 
 class snake:
-    def __init__(self, x, y, colour, dir):
+    def __init__(self, x, y, colour, dir, score):
         self.x = [(s - 1) * pixelsize for s in x]
         self.y = [(s - 1) * pixelsize + 50 for s in y]
         self.colour = colour
         self.dir = dir
+        self.score = score
     def draw_snake(self):
         fill(self.colour)
         stroke(0)
@@ -69,9 +70,9 @@ class snake:
 
 
 def reset_snake1():
-    return snake([2, 2, 2], [2, 3, 4], '#ff0000', 'down')
+    return snake([2, 2, 2], [2, 3, 4], '#ff0000', 'down', 0)
 def reset_snake2():
-    return snake([gridx - 1, gridx - 1, gridx - 1], [gridy - 1, gridy - 2, gridy - 3], '#0000ff', 'up')
+    return snake([gridx - 1, gridx - 1, gridx - 1], [gridy - 1, gridy - 2, gridy - 3], '#0000ff', 'up', 0)
 
 def setup():
     global pixelsize, snake1, snake2, gridx, gridy, screen
@@ -101,8 +102,8 @@ def draw():
             rect(350, 0, 150, 50)
             fill("#ff0000")
             textSize(20)
-            text("score : ", 40,20)
-            text("score : ", 390,20)
+            text("score : {}".format(snake1.score), 75,20)
+            text("score : {}".format(snake2.score), 425,20)
             textSize(40)
             text("{}:{}".format((180 - time)/60, (180 - time)%60), width/2, 20)
         if screen == 'elimination':
@@ -111,8 +112,8 @@ def draw():
             rect(250, 0, 250, 50)
             fill("#ff0000")
             textSize(20)
-            text("score : ", 40,20)
-            text("score : ", 290,20)
+            text("score : {}".format(snake1.score), width/4,20)
+            text("score : {}".format(snake2.score), width*3/4,20)
 
 def mouseClicked():
     global screen
