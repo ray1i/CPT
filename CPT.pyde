@@ -44,16 +44,28 @@ class snake:
             del self.y[0]
             if self.dir == 'up':
                 self.x.append(self.x[-1])
-                self.y.append(self.y[-1] - pixelsize)
+                if self.y[-1] - pixelsize < 0:
+                    self.y.append(self.y[-1] - pixelsize + height)
+                else:
+                    self.y.append(self.y[-1] - pixelsize)
             if self.dir == 'down':
                 self.x.append(self.x[-1])
-                self.y.append(self.y[-1] + pixelsize)
+                if self.y[-1] + pixelsize >= height:
+                    self.y.append(self.y[-1] + pixelsize - height)
+                else:
+                    self.y.append(self.y[-1] + pixelsize)
             if self.dir == 'left':
-                self.x.append(self.x[-1] - pixelsize)
                 self.y.append(self.y[-1])
+                if self.x[-1] - pixelsize < 0:
+                    self.x.append(self.x[-1] - pixelsize + width)
+                else:
+                    self.x.append(self.x[-1] - pixelsize)
             if self.dir == 'right':
-                self.x.append(self.x[-1] + pixelsize)
                 self.y.append(self.y[-1])
+                if self.x[-1] + pixelsize >= width:
+                    self.x.append(self.x[-1] + pixelsize - width)
+                else:
+                    self.x.append(self.x[-1] + pixelsize)
 
 
 def reset_snake1():
