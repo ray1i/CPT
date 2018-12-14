@@ -82,9 +82,25 @@ def draw():
         snake1.move()
         snake2.move()
         if screen == 'timed':
-            pass
+            time = frameCount // 60
+            fill(255)
+            rect(0, 0, 150, 50)
+            rect(150, 0, 200, 50)
+            rect(350, 0, 150, 50)
+            fill("#ff0000")
+            textSize(20)
+            text("score : ", 40,20)
+            text("score : ", 390,20)
+            textSize(40)
+            text("{}:{}".format((180 - time)/60, (180 - time)%60), width/2, 20)
         if screen == 'elimination':
-            pass
+            fill(255)
+            rect(0, 0, 250, 50)
+            rect(250, 0, 250, 50)
+            fill("#ff0000")
+            textSize(20)
+            text("score : ", 40,20)
+            text("score : ", 290,20)
 
 def mouseClicked():
     global screen
