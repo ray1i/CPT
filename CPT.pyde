@@ -130,9 +130,6 @@ def draw():
         if screen == 'timed':
             time = frameCount // 60
             fill(255)
-            rect(0, 0, 150, hud_height)
-            rect(150, 0, 200, hud_height)
-            rect(350, 0, 150, hud_height)
             textSize(40)
             text("{}:{}".format((180 - time)/60, (180 - time)%60), width/2, 20)
             if (180 - time)/60 <= 0 and (180 - time)%60 <= 0:
