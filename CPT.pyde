@@ -1,6 +1,9 @@
+import random
+
 gridx = 50
 gridy = 50
 pixelsize = 10
+hud_height = (gridx * pixelsize) / 10
 hover_clr='#ff0000'
 button_normal=255
 
@@ -29,7 +32,7 @@ def draw_title():
 class snake:
     def __init__(self, x, y, colour, dir, score):
         self.x = [(s - 1) * pixelsize for s in x]
-        self.y = [(s - 1) * pixelsize + 50 for s in y]
+        self.y = [(s - 1) * pixelsize + hud_height for s in y]
         self.colour = colour
         self.dir = dir
         self.score = score
@@ -68,25 +71,29 @@ class snake:
                 else:
                     self.x.append(self.x[-1] + pixelsize)
 
-class dot:
+class food:
     def __init__(self, x, y):
         self.x = x
         self.y = y
-    def draw_dot(self):
+    def draw_food(self):
         fill(255)
         rectMode(CORNER)
-        rect(x, y, pixelsize, pixelsize)
-    def make_dot(self):
-        self.x = 
+        rect(self.x, self.y, pixelsize, pixelsize)
+    def make_food(self):
+        self.x = random.randint(0, gridx) * pixelsize
+        self.y = random.randint(0, gridy) * pixelsize + hud_height
+
+food = food(random.randint(0, gridx) * pixelsize, random.randint(0, gridy) * pixelsize + hud_height)
 
 def reset_snake1():
     return snake([2, 2, 2], [2, 3, 4], '#ff0000', 'down', 0)
 def reset_snake2():
     return snake([gridx - 1, gridx - 1, gridx - 1], [gridy - 1, gridy - 2, gridy - 3], '#0000ff', 'up', 0)
 
+
 def setup():
-    global pixelsize, snake1, snake2, gridx, gridy, screen
-    size(gridx * pixelsize, gridy * pixelsize + 50)
+    global snake1, snake2, screen
+    size(gridx * pixelsize, gridy * pixelsize + hud_height)
     snake1 = reset_snake1()
     snake2 = reset_snake2()
     screen = 'title'
@@ -100,6 +107,7 @@ def draw():
         draw_button(width/2, height/2 + 120, 400, 100, 'ELIMINATION')
     else:
         background(0)
+        food.draw_food()
         snake1.draw_snake()
         snake2.draw_snake()
         snake1.move()
@@ -107,9 +115,9 @@ def draw():
         if screen == 'timed':
             time = frameCount // 60
             fill(255)
-            rect(0, 0, 150, 50)
-            rect(150, 0, 200, 50)
-            rect(350, 0, 150, 50)
+            rect(0, 0, 150, hud_height)
+            rect(150, 0, 200, hud_height)
+            rect(350, 0, 150, hud_height)
             fill("#ff0000")
             textSize(20)
             text("score : {}".format(snake1.score), 75,20)
@@ -118,8 +126,8 @@ def draw():
             text("{}:{}".format((180 - time)/60, (180 - time)%60), width/2, 20)
         if screen == 'elimination':
             fill(255)
-            rect(0, 0, 250, 50)
-            rect(250, 0, 250, 50)
+            rect(0, 0, 250, hud_height)
+            rect(250, 0, 250, hud_height)
             fill("#ff0000")
             textSize(20)
             text("score : {}".format(snake1.score), width/4,20)
@@ -151,5 +159,3 @@ def keyPressed():
         snake2.dir = 'left'
     if keyCode == RIGHT:
         snake2.dir = 'right'
-
-
