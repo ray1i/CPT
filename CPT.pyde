@@ -105,6 +105,12 @@ def draw():
         draw_title()
         draw_button(width/2, height/2, 400, 100, 'TIMED')
         draw_button(width/2, height/2 + 120, 400, 100, 'ELIMINATION')
+    elif screen == 'end':
+        background(0)
+        draw_button(width/2, height/2 + 100, 400, 100, 'NEW GAME')
+        fill(255)
+        textSize(40)
+        text("{}, WIN".format("Nothing"), width/2, height/3)
     else:
         background(0)
         food.draw_food()
@@ -124,6 +130,8 @@ def draw():
             text("score : {}".format(snake2.score), 425,20)
             textSize(40)
             text("{}:{}".format((180 - time)/60, (180 - time)%60), width/2, 20)
+            if (180 - time)/60 <= 0 and (180 - time)%60 <= 0:
+                screen = 'end'
         if screen == 'elimination':
             fill(255)
             rect(0, 0, 250, hud_height)
@@ -140,6 +148,9 @@ def mouseClicked():
             screen = 'timed'
         if mouse_in(width/2, height/2 + 120, 400, 100):
             screen = 'elimination'
+        elif screen == 'end':
+    if mouse_in(width/2, height/2 + 100, 400, 100):
+        screen = 'tittle'
 
 def keyPressed():
     global snake1, snake2
