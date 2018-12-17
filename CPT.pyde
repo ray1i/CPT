@@ -6,6 +6,7 @@ pixelsize = 10
 hud_height = (gridx * pixelsize) / 10
 button_normal = 255
 hover_clr = 200
+time_limit = 180
 
 def draw_button(x, y, w, h, words):
     noStroke()
@@ -71,6 +72,11 @@ class snake:
                 else:
                     self.x.append(self.x[-1] + pixelsize)
 
+def reset_snake1():
+    return snake([2, 2, 2], [2, 3, 4], '#ff0000', 'down', 0)
+def reset_snake2():
+    return snake([gridx - 1, gridx - 1, gridx - 1], [gridy - 1, gridy - 2, gridy - 3], '#0000ff', 'up', 0)
+
 class food:
     def __init__(self, x, y):
         self.x = x
@@ -84,11 +90,6 @@ class food:
         self.y = random.randint(0, gridy) * pixelsize + hud_height
 food = food(random.randint(0, gridx) * pixelsize, random.randint(0, gridy) * pixelsize + hud_height)
 
-def reset_snake1():
-    return snake([2, 2, 2], [2, 3, 4], '#ff0000', 'down', 0)
-def reset_snake2():
-    return snake([gridx - 1, gridx - 1, gridx - 1], [gridy - 1, gridy - 2, gridy - 3], '#0000ff', 'up', 0)
-
 def draw_hud():
     fill(255)
     rect(0, 0, width, hud_height)
@@ -99,6 +100,19 @@ def draw_hud():
     text(snake1.score, 0, hud_height / 2)
     textAlign(RIGHT, CENTER)
     text(snake2.score, width, hud_height / 2)
+
+def draw_timer():
+    global time, screen
+    if frameCount % 60 ==0:
+        time -= 1
+    
+    fill(0)
+    textSize(40)
+    textAlign(CENTER, CENTER)
+    #text(time, width / 2, hud_height / 2)
+    text("{}:{}{}".format(time // 60, time % 60 // 10, time % 10), width/2, 20)
+    if time <= 0:
+        screen = 'end'
 
 def setup():
     global snake1, snake2, screen
@@ -128,21 +142,16 @@ def draw():
         snake2.move()
         draw_hud()
         if screen == 'timed':
-            time = frameCount // 60
-            fill(0)
-            textSize(40)
-            textAlign(CENTER, CENTER)
-            text("{}:{}".format((180 - time)/60, (180 - time)%60), width/2, 20)
-            if (180 - time)/60 <= 0 and (180 - time)%60 <= 0:
-                screen = 'end'
+            draw_timer()
         if screen == 'elimination':
             pass
 
 def mouseClicked():
-    global screen
+    global screen, time
     if screen == 'title':
         if mouse_in(width/2, height/2, 400, 100):
             screen = 'timed'
+            time = time_limit
         if mouse_in(width/2, height/2 + 120, 400, 100):
             screen = 'elimination'
     elif screen == 'end':
