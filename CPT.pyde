@@ -129,8 +129,9 @@ def draw():
         draw_hud()
         if screen == 'timed':
             time = frameCount // 60
-            fill(255)
+            fill(0)
             textSize(40)
+            textAlign(CENTER, CENTER)
             text("{}:{}".format((180 - time)/60, (180 - time)%60), width/2, 20)
             if (180 - time)/60 <= 0 and (180 - time)%60 <= 0:
                 screen = 'end'
