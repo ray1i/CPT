@@ -74,7 +74,8 @@ class snake:
                 else:
                     self.x.append(self.x[-1] + pixelsize)
     def food_collide(self, x, y):
-        return self.x[-1] == x and self.y[-1] == y
+        if frameCount % 10 == 0:
+            return self.x[-1] == x and self.y[-1] == y
         
 
 def reset_snake1():
@@ -145,8 +146,6 @@ def draw():
         snake2.draw_snake()
         draw_hud()
         
-        print(snake1.food_collide)
-        print(food.x, food.y)
         if not snake1.food_collide(food.x, food.y):
             snake1.del_end()
         else:
@@ -157,18 +156,6 @@ def draw():
             food.make_food()
         snake1.grow()
         snake2.grow()
-        '''
-        print(snake1.food_collide)
-        if snake1.food_collide(food.x, food.y):
-            snake1.grow()
-            food.make_food()
-        if snake2.food_collide(food.x, food.y):
-            snake2.grow()
-            food.make_food()
-        snake1.grow()
-        snake2.grow()
-        snake1.del_end()
-        snake2.del_end()'''
         
         if screen == 'timed':
             draw_timer()
