@@ -44,38 +44,35 @@ class snake:
         for i in range(len(self.x)):
             rect(self.x[i], self.y[i], pixelsize, pixelsize)
     def del_end(self):
-        if frameCount % 10 == 0:
-            del self.x[0]
-            del self.y[0]
+        del self.x[0]
+        del self.y[0]
     def grow(self):
-        if frameCount % 10 == 0:
-            if self.dir == 'up':
-                self.x.append(self.x[-1])
-                if self.y[-1] - pixelsize < hud_height:
-                    self.y.append(self.y[-1] - pixelsize + height - hud_height)
-                else:
-                    self.y.append(self.y[-1] - pixelsize)
-            if self.dir == 'down':
-                self.x.append(self.x[-1])
-                if self.y[-1] + pixelsize >= height:
-                    self.y.append(self.y[-1] + pixelsize - height + hud_height)
-                else:
-                    self.y.append(self.y[-1] + pixelsize)
-            if self.dir == 'left':
-                self.y.append(self.y[-1])
-                if self.x[-1] - pixelsize < 0:
-                    self.x.append(self.x[-1] - pixelsize + width)
-                else:
-                    self.x.append(self.x[-1] - pixelsize)
-            if self.dir == 'right':
-                self.y.append(self.y[-1])
-                if self.x[-1] + pixelsize >= width:
-                    self.x.append(self.x[-1] + pixelsize - width)
-                else:
-                    self.x.append(self.x[-1] + pixelsize)
+        if self.dir == 'up':
+            self.x.append(self.x[-1])
+            if self.y[-1] - pixelsize < hud_height:
+                self.y.append(self.y[-1] - pixelsize + height - hud_height)
+            else:
+                self.y.append(self.y[-1] - pixelsize)
+        if self.dir == 'down':
+            self.x.append(self.x[-1])
+            if self.y[-1] + pixelsize >= height:
+                self.y.append(self.y[-1] + pixelsize - height + hud_height)
+            else:
+                self.y.append(self.y[-1] + pixelsize)
+        if self.dir == 'left':
+            self.y.append(self.y[-1])
+            if self.x[-1] - pixelsize < 0:
+                self.x.append(self.x[-1] - pixelsize + width)
+            else:
+                self.x.append(self.x[-1] - pixelsize)
+        if self.dir == 'right':
+            self.y.append(self.y[-1])
+            if self.x[-1] + pixelsize >= width:
+                self.x.append(self.x[-1] + pixelsize - width)
+            else:
+                self.x.append(self.x[-1] + pixelsize)
     def food_collide(self, x, y):
-        if frameCount % 10 == 0:
-            return self.x[-1] == x and self.y[-1] == y
+        return self.x[-1] == x and self.y[-1] == y
         
 
 def reset_snake1():
@@ -92,8 +89,8 @@ class food:
         rectMode(CORNER)
         rect(self.x, self.y, pixelsize, pixelsize)
     def make_food(self):
-        self.x = random.randint(1, gridx) * pixelsize
-        self.y = random.randint(1, gridy) * pixelsize + hud_height
+        self.x = random.randint(1, gridx - 1) * pixelsize
+        self.y = random.randint(1, gridy - 1) * pixelsize + hud_height
 food = food(random.randint(0, gridx) * pixelsize, random.randint(0, gridy) * pixelsize + hud_height)
 
 def draw_hud():
@@ -154,18 +151,19 @@ def draw():
         snake2.draw_snake()
         draw_hud()
         
-        if not snake1.food_collide(food.x, food.y):
-            snake1.del_end()
-        else:
-            food.make_food()
-            snake1.score += 1
-        if not snake2.food_collide(food.x, food.y):
-            snake2.del_end()
-        else:
-            food.make_food()
-            snake2.score += 1
-        snake1.grow()
-        snake2.grow()
+        if frameCount % 10 == 0:
+            if not snake1.food_collide(food.x, food.y):
+                snake1.del_end()
+            else:
+                food.make_food()
+                snake1.score += 1
+            if not snake2.food_collide(food.x, food.y):
+                snake2.del_end()
+            else:
+                food.make_food()
+                snake2.score += 1
+            snake1.grow()
+            snake2.grow()
         
         if screen == 'timed':
             draw_timer()
