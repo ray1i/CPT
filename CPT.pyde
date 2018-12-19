@@ -6,7 +6,7 @@ pixelsize = 10
 hud_height = (gridx * pixelsize) / 10
 button_normal = 255
 hover_clr = 200
-time_limit = 180
+time_limit = 10
 
 def draw_button(x, y, w, h, words):
     noStroke()
@@ -120,6 +120,14 @@ def draw_timer():
     if time <= 0:
         screen = 'end'
 
+def winner():
+    if snake1.score < snake2.score:
+        return 'BLUE'
+    elif snake1.score == snake2.score:
+        return 'NO ONE'
+    else:
+        return 'RED'
+
 def setup():
     global snake1, snake2, screen
     size(gridx * pixelsize, gridy * pixelsize + hud_height)
@@ -138,7 +146,7 @@ def draw():
         draw_button(width/2, height/2 + 100, 400, 100, 'NEW GAME')
         fill(255)
         textSize(40)
-        text("{}, WIN".format("Nothing"), width/2, height/3)
+        text("{} WINS".format(winner()), width/2, height/3)
     else:
         background(0)
         food.draw_food()
@@ -165,7 +173,7 @@ def draw():
             pass
 
 def mouseClicked():
-    global screen, time
+    global screen, time, snake1, snake2
     if screen == 'title':
         if mouse_in(width/2, height/2, 400, 100):
             screen = 'timed'
@@ -175,6 +183,8 @@ def mouseClicked():
     elif screen == 'end':
         if mouse_in(width/2, height/2 + 100, 400, 100):
             screen = 'title'
+            snake1 = reset_snake1()
+            snake2 = reset_snake2()
 
 def keyPressed():
     global snake1, snake2
