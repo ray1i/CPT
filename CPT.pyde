@@ -150,10 +150,12 @@ def draw():
             snake1.del_end()
         else:
             food.make_food()
+            snake1.score += 1
         if not snake2.food_collide(food.x, food.y):
             snake2.del_end()
         else:
             food.make_food()
+            snake2.score += 1
         snake1.grow()
         snake2.grow()
         
