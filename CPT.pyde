@@ -6,7 +6,7 @@ pixelsize = 10
 hud_height = (gridx * pixelsize) / 10
 button_normal = 255
 hover_clr = 200
-time_limit = 10
+time_limit = 180
 
 def draw_button(x, y, w, h, words):
     noStroke()
