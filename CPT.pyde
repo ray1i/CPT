@@ -37,7 +37,7 @@ class snake:
         self.y = [(s - 1) * pixelsize + hud_height for s in y]
         self.colour = colour
         self.dir = dir
-        self.changedir = 0
+        self.changedir = dir
         self.score = 0
     def draw_snake(self):
         fill(self.colour)
@@ -76,32 +76,40 @@ class snake:
     def food_collide(self, x, y):
         return self.x[-1] == x and self.y[-1] == y
     def snake_collide(self, other_x, other_y):
-        for x in range(len(other_x) - 1):
-            for y in range(len(other_y) - 1):
+        for x in range(len(other_x)):
+            for y in range(len(other_y)):
                 if self.x[-1] == other_x[x] and self.y[-1] == other_y[y]:
                     return True
+        return False
+    def self_collide(self):
+        for i in range(len(self.x) - 1):
+            if self.x[-1] == self.x[i] and self.y[-1] == self.y[i]:
+                return True
+        return False
     def control(self, snake):
         if snake == 1:
             if key == 'w' or key == 'W':
                 if self.dir == 'down':
-                    pass
+                    return snake1.dir
                 else:
-                    self.changedir = 'up'
+                    return 'up'
             if key == 's' or key == 'S':
                 if self.dir == 'up':
-                    pass
+                    return snake1.dir
                 else:
-                    self.changedir = 'down'
+                    return 'down'
             if key == 'a' or key == 'A':
                 if self.dir == 'right':
-                    pass
+                    return snake1.dir
                 else:
-                    self.changedir = 'left'
+                    return 'left'
             if key == 'd' or key == 'D':
                 if self.dir == 'left':
-                    pass
+                    return snake1.dir
                 else:
-                    self.changedir = 'right'
+                    return 'right'
+            return snake1.changedir
+
         if snake == 2:
             if keyCode == UP:
                 if snake2.dir == 'down':
@@ -123,6 +131,7 @@ class snake:
                     return snake2.dir
                 else:
                     return 'right'
+            return snake2.changedir
 
 def reset_snake1():
     return snake([2, 2, 2], [2, 3, 4], '#ff0000', 'down')
@@ -170,16 +179,16 @@ def winner():
     if screen == 'timed':
         if snake1.score < snake2.score:
             return 'BLUE'
-        elif snake1.score == snake2.score:
-            return 'NO ONE'
-        else:
+        elif snake1.score > snake2.score:
             return 'RED'
+        else:
+            return 'NO ONE'
     if screen == 'elimination':
         if snake1.snake_collide(snake2.x, snake2.y) and snake2.snake_collide(snake1.x, snake1.y):
             return 'NO ONE'
-        elif snake1.snake_collide(snake2.x, snake2.y) or snake1.snake_collide(snake1.x, snake1.y):
+        elif snake1.snake_collide(snake2.x, snake2.y) or snake1.self_collide():
             return 'BLUE'
-        elif snake2.snake_collide(snake1.x, snake1.y) or snake2.snake_collide(snake2.x, snake2.y):
+        elif snake2.snake_collide(snake1.x, snake1.y) or snake2.self_collide():
             return 'RED'
             
 def setup():
@@ -196,10 +205,10 @@ def draw():
     if screen == 'title':
         background(0)
         draw_title()
-        draw_button(width/2, height/2, 400, 100, 'TIMED')
-        draw_button(width/2, height/2 + 120, 400, 100, 'ELIMINATION')
+        draw_button(width/2, height/2, 400, pixelsize*10, 'TIMED')
+        draw_button(width/2, height/2 + 120, 400, pixelsize*10, 'ELIMINATION')
     elif game_over:
-        draw_button(width/2, height/2 + 100, 400, 100, 'NEW GAME')
+        draw_button(width/2, height/2 + 100, 400, pixelsize*10, 'NEW GAME')
         fill(255)
         textSize(40)
         text("{} WINS".format(winner()), width/2, height/3)
@@ -211,40 +220,42 @@ def draw():
         draw_hud()
         
         if keyPressed:
-            snake1.changedir = control(1)
-            snake2.changedir = control(2)
+            snake1.changedir = snake1.control(1)
+            snake2.changedir = snake2.control(2)
         
         if frameCount % 10 == 0:
+            snake1.dir = snake1.changedir
+            snake2.dir = snake2.changedir
             
-            
-            if not snake1.food_collide(food.x, food.y):
-                snake1.del_end()
-            else:
-                food.make_food()
-                snake1.score += 1
-            if not snake2.food_collide(food.x, food.y):
-                snake2.del_end()
-            else:
-                food.make_food()
-                snake2.score += 1
             snake1.grow()
             snake2.grow()
             
-            #snake1.dir = snake1.changedir
-            #snake2.dir = snake2.changedir
+            if snake1.food_collide(food.x, food.y):
+                food.make_food()
+                snake1.score += 1
+            else:
+                snake1.del_end()
+
+            if snake2.food_collide(food.x, food.y):
+                food.make_food()
+                snake2.score += 1
+            else:
+                snake2.del_end()
         
         if screen == 'timed':
             draw_timer()
-            if snake1.snake_collide(snake2.x, snake2.y) or snake1.snake_collide(snake1.x, snake1.y):
+            if snake1.snake_collide(snake2.x, snake2.y) or snake1.self_collide():
                 snake1 = reset_snake1()
-            if snake2.snake_collide(snake1.x, snake1.y) or snake2.snake_collide(snake2.x, snake2.y):
+            if snake2.snake_collide(snake1.x, snake1.y) or snake2.self_collide():
+                print(snake2.x, snake2.y)
                 snake2 = reset_snake2()
+
         if screen == 'elimination':
             if snake1.snake_collide(snake2.x, snake2.y) and snake2.snake_collide(snake1.x, snake1.y):
                 game_over = True
-            elif snake1.snake_collide(snake2.x, snake2.y) or snake1.snake_collide(snake1.x, snake1.y):
+            elif snake1.snake_collide(snake2.x, snake2.y) or snake1.self_collide():
                 game_over = True
-            elif snake2.snake_collide(snake1.x, snake1.y) or snake2.snake_collide(snake2.x, snake2.y):
+            elif snake2.snake_collide(snake1.x, snake1.y) or snake2.self_collide():
                 game_over = True
 
 def mouseClicked():
