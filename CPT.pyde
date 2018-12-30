@@ -163,15 +163,15 @@ def draw_hud():
     text(snake2.score, width, hud_height / 2)
 
 def draw_timer():
-    global time, screen, game_over
+    global time, game_over
     if frameCount % 60 ==0:
         time -= 1
     
     fill(0)
-    textSize(40)
+    textSize(hud_height)
     textAlign(CENTER, CENTER)
-    #text(time, width / 2, hud_height / 2)
-    text("{}:{}{}".format(time // 60, time % 60 // 10, time % 10), width/2, 20)
+
+    text("{}:{}{}".format(time // 60, time % 60 // 10, time % 10), width/2, hud_height/2)
     if time <= 0:
         game_over = True
 
