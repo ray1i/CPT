@@ -228,8 +228,14 @@ def draw():
     if screen == 'title':
         background(0)
         draw_title()
-        draw_button(width/2, height/2, 400, pixelsize*10, 'TIMED')
-        draw_button(width/2, height/2 + 120, 400, pixelsize*10, 'ELIMINATION')
+        draw_button(width/2, height/2, 400, pixelsize*8, 'TIMED')
+        draw_button(width/2, height/2 + height/6, 400, pixelsize*8, 'ELIMINATION')
+        draw_button(width/2, height/2 + height/3, 400, pixelsize*8, 'HOW TO PLAY')
+    elif screen == 'htp':
+        background(0)
+        fill(255)
+        textAlign(LEFT, TOP)
+        text('this is how to play:', 0, 0)
     elif game_over:
         draw_button(width/2, height/2 + 100, 400, pixelsize*10, 'NEW GAME')
         fill(255)
@@ -285,11 +291,13 @@ def draw():
 def mouseClicked():
     global screen, time, snake1, snake2, game_over
     if screen == 'title':
-        if mouse_in(width/2, height/2, 400, 100):
+        if mouse_in(width/2, height/2, 400, pixelsize*8):
             screen = 'timed'
             time = time_limit
-        if mouse_in(width/2, height/2 + 120, 400, 100):
+        if mouse_in(width/2, height/2 + height/6, 400, pixelsize*8):
             screen = 'elimination'
+        if mouse_in(width/2, height/2 + height/3, 400, pixelsize*8):
+            screen = 'htp'
     elif game_over:
         if mouse_in(width/2, height/2 + 100, 400, 100):
             screen = 'title'
