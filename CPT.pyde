@@ -1,3 +1,4 @@
+
 import random
 
 gridx = 50
@@ -9,6 +10,7 @@ hover_clr = 200
 time_limit = 180
 game_over = False
 
+
 def draw_button(x, y, w, h, words):
     noStroke()
     if mouse_in(x, y, w, h):
@@ -19,17 +21,20 @@ def draw_button(x, y, w, h, words):
     textAlign(CENTER, CENTER)
     rect(x, y, w, h, 100)
     fill(0)
-    textSize(h / 2)
+    textSize(h/2)
     text(words, x, y)
+
 
 def mouse_in(x, y, w, h):
     return x - w/2 < mouseX < x + w/2 and y - h/2 < mouseY < y + h/2
+
 
 def draw_title():
     fill(255)
     textSize(100)
     textAlign(CENTER)
     text("SNAKES", width/2, height/3)
+
 
 class snake:
     def __init__(self, x, y, colour, dir):
@@ -39,15 +44,18 @@ class snake:
         self.dir = dir
         self.changedir = dir
         self.score = 0
+
     def draw_snake(self):
         fill(self.colour)
         stroke(0)
         rectMode(CORNER)
         for i in range(len(self.x)):
             rect(self.x[i], self.y[i], pixelsize, pixelsize)
+
     def del_end(self):
         del self.x[0]
         del self.y[0]
+
     def grow(self):
         if self.dir == 'up':
             self.x.append(self.x[-1])
@@ -73,19 +81,22 @@ class snake:
                 self.x.append(self.x[-1] + pixelsize - width)
             else:
                 self.x.append(self.x[-1] + pixelsize)
+
     def food_collide(self, x, y):
         return self.x[-1] == x and self.y[-1] == y
+
     def snake_collide(self, other_x, other_y):
-        for x in range(len(other_x)):
-            for y in range(len(other_y)):
-                if self.x[-1] == other_x[x] and self.y[-1] == other_y[y]:
-                    return True
+        for i in range(len(other_x)):
+            if self.x[-1] == other_x[i] and self.y[-1] == other_y[i]:
+                return True
         return False
+
     def self_collide(self):
         for i in range(len(self.x) - 1):
             if self.x[-1] == self.x[i] and self.y[-1] == self.y[i]:
                 return True
         return False
+
     def control(self, snake):
         if snake == 1:
             if key == 'w' or key == 'W':
@@ -133,40 +144,49 @@ class snake:
                     return 'right'
             return snake2.changedir
 
+
 def reset_snake1():
     return snake([2, 2, 2], [2, 3, 4], '#ff0000', 'down')
+
+
 def reset_snake2():
     return snake([gridx - 1, gridx - 1, gridx - 1], [gridy - 1, gridy - 2, gridy - 3], '#0000ff', 'up')
+
 
 class food:
     def __init__(self, x, y):
         self.x = x
         self.y = y
+
     def draw_food(self):
         fill(255)
         rectMode(CORNER)
         rect(self.x, self.y, pixelsize, pixelsize)
+
     def make_food(self):
         self.x = random.randint(1, gridx - 1) * pixelsize
         self.y = random.randint(1, gridy - 1) * pixelsize + hud_height
+
 food = food(random.randint(0, gridx) * pixelsize, random.randint(0, gridy) * pixelsize + hud_height)
+
 
 def draw_hud():
     fill(255)
     rect(0, 0, width, hud_height)
-    
+
     fill(0)
     textSize(hud_height)
     textAlign(LEFT, CENTER)
-    text(snake1.score, 0, hud_height / 2)
+    text(snake1.score, 0, hud_height/2)
     textAlign(RIGHT, CENTER)
-    text(snake2.score, width, hud_height / 2)
+    text(snake2.score, width, hud_height/2)
+
 
 def draw_timer():
     global time, game_over
-    if frameCount % 60 ==0:
+    if frameCount % 60 == 0:
         time -= 1
-    
+
     fill(0)
     textSize(hud_height)
     textAlign(CENTER, CENTER)
@@ -174,6 +194,7 @@ def draw_timer():
     text("{}:{}{}".format(time // 60, time % 60 // 10, time % 10), width/2, hud_height/2)
     if time <= 0:
         game_over = True
+
 
 def winner():
     if screen == 'timed':
@@ -190,7 +211,8 @@ def winner():
             return 'BLUE'
         elif snake2.snake_collide(snake1.x, snake1.y) or snake2.self_collide():
             return 'RED'
-            
+
+
 def setup():
     global snake1, snake2, screen
     size(gridx * pixelsize, gridy * pixelsize + hud_height)
@@ -199,6 +221,7 @@ def setup():
     snake1.score = 0
     snake2.score = 0
     screen = 'title'
+
 
 def draw():
     global snake1, snake2, screen, game_over
@@ -218,18 +241,18 @@ def draw():
         snake1.draw_snake()
         snake2.draw_snake()
         draw_hud()
-        
+
         if keyPressed:
             snake1.changedir = snake1.control(1)
             snake2.changedir = snake2.control(2)
-        
+
         if frameCount % 10 == 0:
             snake1.dir = snake1.changedir
             snake2.dir = snake2.changedir
-            
+
             snake1.grow()
             snake2.grow()
-            
+
             if snake1.food_collide(food.x, food.y):
                 food.make_food()
                 snake1.score += 1
@@ -241,7 +264,7 @@ def draw():
                 snake2.score += 1
             else:
                 snake2.del_end()
-        
+
         if screen == 'timed':
             draw_timer()
             if snake1.snake_collide(snake2.x, snake2.y) or snake1.self_collide():
@@ -257,6 +280,7 @@ def draw():
                 game_over = True
             elif snake2.snake_collide(snake1.x, snake1.y) or snake2.self_collide():
                 game_over = True
+
 
 def mouseClicked():
     global screen, time, snake1, snake2, game_over
