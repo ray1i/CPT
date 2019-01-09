@@ -233,9 +233,25 @@ def draw():
         draw_button(width/2, height/2 + height/3, 400, pixelsize*8, 'HOW TO PLAY')
     elif screen == 'htp':
         background(0)
+        draw_button(width/2, height - pixelsize*3, 400, pixelsize*6, 'BACK')
+
+        textSize(pixelsize*3)
         fill(255)
         textAlign(LEFT, TOP)
-        text('this is how to play:', 0, 0)
+        
+        text('HOW TO PLAY:', 0, 0)
+        text('TIMED MODE: ', 0, pixelsize*4)
+        text('ELIMINATION MODE: ', 0, pixelsize*4)
+        text('CONTROLS: ', 0, height/2)
+        
+        rectMode(CORNERS)
+        textSize(pixelsize*2)
+        text('Eat dots to grow. Avoid bumping into the other snake. Don\'t collide with yourself.', 0, pixelsize*4, width, height)
+        text('When the timer runs out, the longest snake wins.', 0, pixelsize*4, width, height)
+        text('', 0, pixelsize*4, width, height)
+        
+        
+        
     elif game_over:
         draw_button(width/2, height/2 + 100, 400, pixelsize*10, 'NEW GAME')
         fill(255)
@@ -298,6 +314,9 @@ def mouseClicked():
             screen = 'elimination'
         if mouse_in(width/2, height/2 + height/3, 400, pixelsize*8):
             screen = 'htp'
+    elif screen == 'htp':
+        if mouse_in(width/2, height - pixelsize*3, 400, pixelsize*6):
+            screen = 'title'
     elif game_over:
         if mouse_in(width/2, height/2 + 100, 400, 100):
             screen = 'title'
