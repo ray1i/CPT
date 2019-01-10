@@ -1,4 +1,3 @@
-
 import random
 
 gridx = 50
@@ -240,15 +239,26 @@ def draw():
         textAlign(LEFT, TOP)
         
         text('HOW TO PLAY:', 0, 0)
-        text('TIMED MODE: ', 0, pixelsize*4)
-        text('ELIMINATION MODE: ', 0, pixelsize*4)
-        text('CONTROLS: ', 0, height/2)
+        text('TIMED MODE: ', 0, gridy/6*pixelsize)
+        text('ELIMINATION MODE: ', 0, gridy/6*pixelsize*2)
+        text('CONTROLS: ', 0, gridy/6*pixelsize*3)
         
         rectMode(CORNERS)
         textSize(pixelsize*2)
-        text('Eat dots to grow. Avoid bumping into the other snake. Don\'t collide with yourself.', 0, pixelsize*4, width, height)
-        text('When the timer runs out, the longest snake wins.', 0, pixelsize*4, width, height)
-        text('', 0, pixelsize*4, width, height)
+        textLeading(20)
+        text('Eat dots to grow. Avoid colliding with the other snake. Don\'t collide with yourself.', 0, pixelsize*3, width, height)
+        text('When the timer runs out, the longest snake wins. Collision will reset your score.', 0, gridy/6*pixelsize+pixelsize*3, width, height)
+        text('One life.  Get the other snake to collide with you. Avoid colliding with the other snake.', 0, gridy/6*pixelsize*2+pixelsize*3, width, height)
+        
+        textSize(50)
+        fill('#ff0000')
+        text('''RED:
+    W
+  A S D''', 0, gridy/6*pixelsize*3+pixelsize*3)
+        fill('#0000ff')
+        text('''BLUE:
+     ^
+  < v >''', width/2, gridy/6*pixelsize*3+pixelsize*3)
         
         
         
