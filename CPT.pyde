@@ -129,6 +129,7 @@ class snake:
                 return 'right'
         return self.changedir
 
+
 def reset_snake1():
     return snake([2, 2, 2], [2, 3, 4], '#ff0000', 'down')
 
@@ -175,7 +176,7 @@ def draw_timer():
     textSize(hud_height)
     textAlign(CENTER, CENTER)
 
-    text("{}:{}{}".format(time // 60, time % 60 // 10, time % 10), width/2, hud_height/2)
+    text("{}:{}{}".format(time//60, time % 60//10, time % 10), width/2, hud_height/2)
     if time <= 0:
         game_over = True
 
@@ -222,19 +223,19 @@ def draw():
         textSize(pixelsize*3)
         fill(255)
         textAlign(LEFT, TOP)
-        
+    
         text('HOW TO PLAY:', 0, 0)
         text('TIMED MODE: ', 0, gridy/6*pixelsize)
         text('ELIMINATION MODE: ', 0, gridy/6*pixelsize*2)
         text('CONTROLS: ', 0, gridy/6*pixelsize*3)
-        
+    
         rectMode(CORNERS)
         textSize(pixelsize*2)
         textLeading(20)
         text('Eat dots to grow. Avoid colliding with the other snake. Don\'t collide with yourself.', 0, pixelsize*3, width, height)
         text('When the timer runs out, the longest snake wins. Collision will reset your score.', 0, gridy/6*pixelsize+pixelsize*3, width, height)
         text('One life.  Get the other snake to collide with you. Avoid colliding with the other snake.', 0, gridy/6*pixelsize*2+pixelsize*3, width, height)
-        
+    
         textSize(50)
         fill('#ff0000')
         text('''RED:
