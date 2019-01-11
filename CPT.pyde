@@ -1,4 +1,3 @@
-
 import random
 
 gridx = 50
@@ -99,51 +98,36 @@ class snake:
 
     def control(self, snake):
         if snake == 1:
-            if key == 'w' or key == 'W':
-                if self.dir == 'down':
-                    return snake1.dir
-                else:
-                    return 'up'
-            if key == 's' or key == 'S':
-                if self.dir == 'up':
-                    return snake1.dir
-                else:
-                    return 'down'
-            if key == 'a' or key == 'A':
-                if self.dir == 'right':
-                    return snake1.dir
-                else:
-                    return 'left'
-            if key == 'd' or key == 'D':
-                if self.dir == 'left':
-                    return snake1.dir
-                else:
-                    return 'right'
-            return snake1.changedir
-
-        if snake == 2:
-            if keyCode == UP:
-                if snake2.dir == 'down':
-                    return snake2.dir
-                else:
-                    return 'up'
-            if keyCode == DOWN:
-                if snake2.dir == 'up':
-                    return snake2.dir
-                else:
-                    return 'down'
-            if keyCode == LEFT:
-                if snake2.dir == 'right':
-                    return snake2.dir
-                else:
-                    return 'left'
-            if keyCode == RIGHT:
-                if snake2.dir == 'left':
-                    return snake2.dir
-                else:
-                    return 'right'
-            return snake2.changedir
-
+            up = 87
+            down = 83
+            left = 65
+            right = 68
+        elif snake == 2:
+            up = 38
+            down = 40
+            left = 37
+            right = 39
+        if keyCode == up:
+            if self.dir == 'down':
+                return self.dir
+            else:
+                return 'up'
+        if keyCode == down:
+            if self.dir == 'up':
+                return self.dir
+            else:
+                return 'down'
+        if keyCode == left:
+            if self.dir == 'right':
+                return self.dir
+            else:
+                return 'left'
+        if keyCode == right:
+            if self.dir == 'left':
+                return self.dir
+            else:
+                return 'right'
+        return self.changedir
 
 def reset_snake1():
     return snake([2, 2, 2], [2, 3, 4], '#ff0000', 'down')
@@ -228,8 +212,39 @@ def draw():
     if screen == 'title':
         background(0)
         draw_title()
-        draw_button(width/2, height/2, 400, pixelsize*10, 'TIMED')
-        draw_button(width/2, height/2 + 120, 400, pixelsize*10, 'ELIMINATION')
+        draw_button(width/2, height/2, 400, pixelsize*8, 'TIMED')
+        draw_button(width/2, height/2 + height/6, 400, pixelsize*8, 'ELIMINATION')
+        draw_button(width/2, height/2 + height/3, 400, pixelsize*8, 'HOW TO PLAY')
+    elif screen == 'htp':
+        background(0)
+        draw_button(width/2, height - pixelsize*3, 400, pixelsize*6, 'BACK')
+
+        textSize(pixelsize*3)
+        fill(255)
+        textAlign(LEFT, TOP)
+        
+        text('HOW TO PLAY:', 0, 0)
+        text('TIMED MODE: ', 0, gridy/6*pixelsize)
+        text('ELIMINATION MODE: ', 0, gridy/6*pixelsize*2)
+        text('CONTROLS: ', 0, gridy/6*pixelsize*3)
+        
+        rectMode(CORNERS)
+        textSize(pixelsize*2)
+        textLeading(20)
+        text('Eat dots to grow. Avoid colliding with the other snake. Don\'t collide with yourself.', 0, pixelsize*3, width, height)
+        text('When the timer runs out, the longest snake wins. Collision will reset your score.', 0, gridy/6*pixelsize+pixelsize*3, width, height)
+        text('One life.  Get the other snake to collide with you. Avoid colliding with the other snake.', 0, gridy/6*pixelsize*2+pixelsize*3, width, height)
+        
+        textSize(50)
+        fill('#ff0000')
+        text('''RED:
+    W
+  A S D''', 0, gridy/6*pixelsize*3+pixelsize*3)
+        fill('#0000ff')
+        text('''BLUE:
+     ^
+  < v >''', width/2, gridy/6*pixelsize*3+pixelsize*3)
+
     elif game_over:
         draw_button(width/2, height/2 + 100, 400, pixelsize*10, 'NEW GAME')
         fill(255)
@@ -241,10 +256,6 @@ def draw():
         snake1.draw_snake()
         snake2.draw_snake()
         draw_hud()
-
-        if keyPressed:
-            snake1.changedir = snake1.control(1)
-            snake2.changedir = snake2.control(2)
 
         if frameCount % 10 == 0:
             snake1.dir = snake1.changedir
@@ -270,7 +281,6 @@ def draw():
             if snake1.snake_collide(snake2.x, snake2.y) or snake1.self_collide():
                 snake1 = reset_snake1()
             if snake2.snake_collide(snake1.x, snake1.y) or snake2.self_collide():
-                print(snake2.x, snake2.y)
                 snake2 = reset_snake2()
 
         if screen == 'elimination':
@@ -285,11 +295,16 @@ def draw():
 def mouseClicked():
     global screen, time, snake1, snake2, game_over
     if screen == 'title':
-        if mouse_in(width/2, height/2, 400, 100):
+        if mouse_in(width/2, height/2, 400, pixelsize*8):
             screen = 'timed'
             time = time_limit
-        if mouse_in(width/2, height/2 + 120, 400, 100):
+        if mouse_in(width/2, height/2 + height/6, 400, pixelsize*8):
             screen = 'elimination'
+        if mouse_in(width/2, height/2 + height/3, 400, pixelsize*8):
+            screen = 'htp'
+    elif screen == 'htp':
+        if mouse_in(width/2, height - pixelsize*3, 400, pixelsize*6):
+            screen = 'title'
     elif game_over:
         if mouse_in(width/2, height/2 + 100, 400, 100):
             screen = 'title'
@@ -298,3 +313,9 @@ def mouseClicked():
             snake2 = reset_snake2()
             snake1.score = 0
             snake2.score = 0
+
+
+def keyPressed():
+    global snake1, snake2
+    snake1.changedir = snake1.control(1)
+    snake2.changedir = snake2.control(2)
