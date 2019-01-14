@@ -2,12 +2,12 @@ import random
 
 gridx = 50
 gridy = 50
-pixelsize = 10
+pixelsize = 20
 hud_height = (gridx * pixelsize) / 10
 button_normal = 255
 button_hover = 200
-button_x = pixelsize*40
-button_y = pixelsize*8
+button_x = pixelsize*gridx/5*4
+button_y = pixelsize*gridy/6
 time_limit = 180
 game_over = False
 
@@ -34,7 +34,7 @@ def mouse_in(x, y, w, h):
 
 def draw_title():
     fill(255)
-    textSize(pixelsize*10)
+    textSize(height/6)
     textAlign(CENTER)
     text("SNAKES", width/2, height/3)
 
