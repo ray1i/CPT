@@ -5,15 +5,19 @@ gridy = 50
 pixelsize = 10
 hud_height = (gridx * pixelsize) / 10
 button_normal = 255
-hover_clr = 200
+button_hover = 200
+button_x = pixelsize*40
+button_y = pixelsize*8
 time_limit = 180
 game_over = False
 
 
-def draw_button(x, y, w, h, words):
+def draw_button(x, y, words):
+    w = button_x
+    h = button_y
     noStroke()
     if mouse_in(x, y, w, h):
-        fill(hover_clr)
+        fill(button_hover)
     else:
         fill(button_normal)
     rectMode(CENTER)
@@ -30,7 +34,7 @@ def mouse_in(x, y, w, h):
 
 def draw_title():
     fill(255)
-    textSize(100)
+    textSize(pixelsize*10)
     textAlign(CENTER)
     text("SNAKES", width/2, height/3)
 
@@ -213,12 +217,12 @@ def draw():
     if screen == 'title':
         background(0)
         draw_title()
-        draw_button(width/2, height/2, 400, pixelsize*8, 'TIMED')
-        draw_button(width/2, height/2 + height/6, 400, pixelsize*8, 'ELIMINATION')
-        draw_button(width/2, height/2 + height/3, 400, pixelsize*8, 'HOW TO PLAY')
+        draw_button(width/2, height/2, 'TIMED')
+        draw_button(width/2, height/2 + height/6, 'ELIMINATION')
+        draw_button(width/2, height/2 + height/3, 'HOW TO PLAY')
     elif screen == 'htp':
         background(0)
-        draw_button(width/2, height - pixelsize*3, 400, pixelsize*6, 'BACK')
+        draw_button(width/2, height - pixelsize*3, 'BACK')
 
         textSize(pixelsize*3)
         fill(255)
@@ -247,7 +251,7 @@ def draw():
   < v >''', width/2, gridy/6*pixelsize*3+pixelsize*3)
 
     elif game_over:
-        draw_button(width/2, height/2 + 100, 400, pixelsize*10, 'NEW GAME')
+        draw_button(width/2, height/2 + 100, 'NEW GAME')
         fill(255)
         textSize(40)
         text("{} WINS".format(winner()), width/2, height/3)
@@ -296,18 +300,18 @@ def draw():
 def mouseClicked():
     global screen, time, snake1, snake2, game_over
     if screen == 'title':
-        if mouse_in(width/2, height/2, 400, pixelsize*8):
+        if mouse_in(width/2, height/2, button_x, button_y):
             screen = 'timed'
             time = time_limit
-        if mouse_in(width/2, height/2 + height/6, 400, pixelsize*8):
+        if mouse_in(width/2, height/2 + height/6, button_x, button_y):
             screen = 'elimination'
-        if mouse_in(width/2, height/2 + height/3, 400, pixelsize*8):
+        if mouse_in(width/2, height/2 + height/3, button_x, button_y):
             screen = 'htp'
     elif screen == 'htp':
-        if mouse_in(width/2, height - pixelsize*3, 400, pixelsize*6):
+        if mouse_in(width/2, height - pixelsize*3, button_x, button_y):
             screen = 'title'
     elif game_over:
-        if mouse_in(width/2, height/2 + 100, 400, 100):
+        if mouse_in(width/2, height/2+100, button_x, button_y):
             screen = 'title'
             game_over = False
             snake1 = reset_snake1()
