@@ -2,7 +2,7 @@ import random
 
 gridx = 50
 gridy = 50
-pixelsize = 10
+pixelsize = 12
 hud_height = (gridx * pixelsize) / 10
 button_normal = 255
 button_hover = 200
