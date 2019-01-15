@@ -111,22 +111,22 @@ class snake:
             down = 40
             left = 37
             right = 39
-        if keyCode == up:
+        if keycodes[up]:
             if self.dir == 'down':
                 return self.dir
             else:
                 return 'up'
-        if keyCode == down:
+        if keycodes[down]:
             if self.dir == 'up':
                 return self.dir
             else:
                 return 'down'
-        if keyCode == left:
+        if keycodes[left]:
             if self.dir == 'right':
                 return self.dir
             else:
                 return 'left'
-        if keyCode == right:
+        if keycodes[right]:
             if self.dir == 'left':
                 return self.dir
             else:
@@ -320,7 +320,14 @@ def mouseClicked():
             snake2.score = 0
 
 
+keycodes = [False for i in range(256)]
+
 def keyPressed():
-    global snake1, snake2
+    global snake1, snake2, keycodes
+    keycodes[keyCode] = True
     snake1.changedir = snake1.control(1)
     snake2.changedir = snake2.control(2)
+
+def keyReleased():
+    global keycodes
+    keycodes = [False for i in range(256)]
