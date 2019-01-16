@@ -47,6 +47,7 @@ class snake:
         self.dir = dir
         self.changedir = dir
         self.score = 0
+        self.speed = 6
 
     def draw_snake(self):
         fill(self.colour)
@@ -113,25 +114,33 @@ class snake:
             right = 39
         if keycodes[up]:
             if self.dir == 'down':
-                return self.dir
+                pass
             else:
-                return 'up'
+                self.changedir = 'up'
         if keycodes[down]:
             if self.dir == 'up':
-                return self.dir
+                pass
             else:
-                return 'down'
+                self.changedir = 'down'
         if keycodes[left]:
             if self.dir == 'right':
-                return self.dir
+                pass
             else:
-                return 'left'
+                self.changedir = 'left'
         if keycodes[right]:
             if self.dir == 'left':
-                return self.dir
+                pass
             else:
-                return 'right'
-        return self.changedir
+                self.changedir = 'right'
+    def control_speed(self, snake):
+        if snake == 1:
+            fast = 81
+        elif snake == 2:
+            fast = 47
+        if keycodes[fast]:
+            self.speed = 3
+        else:
+            self.speed = 6
 
 
 def reset_snake1():
@@ -240,20 +249,28 @@ def draw():
         text('When the timer runs out, the longest snake wins. Collision will reset your score.', 0, gridy/6*pixelsize+pixelsize*3, width, height)
         text('One life.  Get the other snake to collide with you. Avoid colliding with the other snake.', 0, gridy/6*pixelsize*2+pixelsize*3, width, height)
     
-        textSize(50)
+        textSize(pixelsize*4)
         fill('#ff0000')
         text('''RED:
     W
   A S D''', 0, gridy/6*pixelsize*3+pixelsize*3)
+        textSize(pixelsize*2)
+        text('''Q to
+speed up''', width/4, gridy/6*pixelsize*3+pixelsize*5)
+
+        textSize(pixelsize*4)
         fill('#0000ff')
         text('''BLUE:
      ^
   < v >''', width/2, gridy/6*pixelsize*3+pixelsize*3)
+        textSize(pixelsize*2)
+        text('''/ to 
+speed up''', width/4*3, gridy/6*pixelsize*3+pixelsize*5)
 
     elif game_over:
         draw_button(width/2, height/2 + 100, 'NEW GAME')
         fill(255)
-        textSize(40)
+        #textSize(button_y/2)
         text("{} WINS".format(winner()), width/2, height/3)
     else:
         background(0)
@@ -262,19 +279,17 @@ def draw():
         snake2.draw_snake()
         draw_hud()
 
-        if frameCount % 10 == 0:
+        if frameCount % snake1.speed == 0:
             snake1.dir = snake1.changedir
-            snake2.dir = snake2.changedir
-
             snake1.grow()
-            snake2.grow()
-
             if snake1.food_collide(food.x, food.y):
                 food.make_food()
                 snake1.score += 1
             else:
                 snake1.del_end()
-
+        if frameCount % snake2.speed == 0:
+            snake2.dir = snake2.changedir
+            snake2.grow()
             if snake2.food_collide(food.x, food.y):
                 food.make_food()
                 snake2.score += 1
@@ -325,9 +340,13 @@ keycodes = [False for i in range(256)]
 def keyPressed():
     global snake1, snake2, keycodes
     keycodes[keyCode] = True
-    snake1.changedir = snake1.control(1)
-    snake2.changedir = snake2.control(2)
+    snake1.control(1)
+    snake2.control(2)
+    snake1.control_speed(1)
+    snake2.control_speed(2)
 
 def keyReleased():
-    global keycodes
-    keycodes = [False for i in range(256)]
+    global snake1, snake2, keycodes
+    keycodes[keyCode] = False
+    snake1.control_speed(1)
+    snake2.control_speed(2)
