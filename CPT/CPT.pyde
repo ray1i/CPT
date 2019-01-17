@@ -82,9 +82,9 @@ class snake:
     def food_collide(self, x, y):
         return self.x[-1] == x and self.y[-1] == y
 
-    def snake_collide(self, other_x, other_y):
-        for i in range(len(other_x)):
-            if self.x[-1] == other_x[i] and self.y[-1] == other_y[i]:
+    def collide(self, other):
+        for i in range(len(other.x)):
+            if self.x[-1] == other.x[i] and self.y[-1] == other.y[i]:
                 return True
         return False
 
@@ -132,6 +132,7 @@ class snake:
         else:
             self.speed = 6
 
+
 def reset_snake1():
     return snake([2, 2, 2], [2, 3, 4], '#ff0000', 'down')
 
@@ -142,8 +143,8 @@ def reset_snake2():
 
 class food:
     def __init__(self, x, y):
-        self.x = x
-        self.y = y
+        self.x = x * pixelsize
+        self.y = y * pixelsize + hud_height
 
     def draw_food(self):
         fill(255)
@@ -154,7 +155,7 @@ class food:
         self.x = random.randint(1, gridx - 1) * pixelsize
         self.y = random.randint(1, gridy - 1) * pixelsize + hud_height
 
-food = food(random.randint(0, gridx) * pixelsize, random.randint(0, gridy) * pixelsize + hud_height)
+food = food(random.randint(0, gridx), random.randint(0, gridy))
 
 
 def draw_button(x, y, words):
@@ -200,9 +201,12 @@ def draw_htp():
     rectMode(CORNERS)
     textSize(pixelsize*2)
     textLeading(20)
-    text('Eat dots to grow. Avoid colliding with the other snake. Don\'t collide with yourself.', 0, pixelsize*3, width, height)
-    text('When the timer runs out, the longest snake wins. Collision will reset your score.', 0, gridy/6*pixelsize+pixelsize*3, width, height)
-    text('One life.  Get the other snake to collide with you. Avoid colliding with the other snake.', 0, gridy/6*pixelsize*2+pixelsize*3, width, height)
+    text('Eat dots to grow. Avoid colliding with the other snake. Don\'t collide with yourself.',
+         0, pixelsize*3, width, height)
+    text('When the timer runs out, the longest snake wins. Collision will reset your score.',
+         0, gridy/6*pixelsize+pixelsize*3, width, height)
+    text('One life.  Get the other snake to collide with you. Avoid colliding with the other snake.',
+         0, gridy/6*pixelsize*2+pixelsize*3, width, height)
 
     textSize(pixelsize*4)
     fill('#ff0000')
@@ -219,7 +223,7 @@ speed up''', width/4, gridy/6*pixelsize*3+pixelsize*5)
    ^
 < v >''', width/2, gridy/6*pixelsize*3+pixelsize*3)
     textSize(pixelsize*2)
-    text('''/ to 
+    text('''/ to
 speed up''', width/4*3, gridy/6*pixelsize*3+pixelsize*5)
 
 
@@ -258,11 +262,11 @@ def winner():
         else:
             return 'NO ONE'
     if screen == 'elimination':
-        if snake1.snake_collide(snake2.x, snake2.y) and snake2.snake_collide(snake1.x, snake1.y):
+        if snake1.collide(snake2) and snake2.collide(snake1):
             return 'NO ONE'
-        elif snake1.snake_collide(snake2.x, snake2.y) or snake1.self_collide():
+        elif snake1.collide(snake2) or snake1.self_collide():
             return 'BLUE'
-        elif snake2.snake_collide(snake1.x, snake1.y) or snake2.self_collide():
+        elif snake2.collide(snake1) or snake2.self_collide():
             return 'RED'
 
 
@@ -279,27 +283,35 @@ def draw():
     elif game_over:
         draw_button(width/2, height/2 + 100, 'NEW GAME')
         fill(255)
-        #textSize(button_y/2)
         text("{} WINS".format(winner()), width/2, height/3)
     else:
+        if frameCount % snake1.speed == 0:
+            snake1.move()
+        if frameCount % snake2.speed == 0:
+            snake2.move()
+
         background(0)
         food.draw_food()
         snake1.draw_snake()
         snake2.draw_snake()
         draw_hud()
 
-        if frameCount % snake1.speed == 0:
-            snake1.move()
-        if frameCount % snake2.speed == 0:
-            snake2.move()
-
         if screen == 'timed':
             draw_timer()
-
-        if snake1.snake_collide(snake2.x, snake2.y) or snake1.self_collide():
-            game_over = True
-        elif snake2.snake_collide(snake1.x, snake1.y) or snake2.self_collide():
-            game_over = True
+            if snake1.collide(snake2) and snake2.collide(snake1):
+                snake1 = reset_snake1()
+                snake2 = reset_snake2()
+            elif snake1.collide(snake2) or snake1.self_collide():
+                snake1 = reset_snake1()
+            elif snake2.collide(snake1) or snake2.self_collide():
+                snake2 = reset_snake2()
+        if screen == 'elimination':
+            if snake1.collide(snake2) and snake2.collide(snake1):
+                game_over = True
+            elif snake1.collide(snake2) or snake1.self_collide():
+                game_over = True
+            elif snake2.collide(snake1) or snake2.self_collide():
+                game_over = True
 
 
 def mouseClicked():
@@ -327,11 +339,13 @@ def mouseClicked():
 
 keycodes = [False for i in range(256)]
 
+
 def keyPressed():
     global snake1, snake2, keycodes
     keycodes[keyCode] = True
     snake1.control(1)
     snake2.control(2)
+
 
 def keyReleased():
     global snake1, snake2, keycodes
