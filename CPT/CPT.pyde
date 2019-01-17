@@ -138,7 +138,7 @@ def reset_snake1():
 
 
 def reset_snake2():
-    return snake([gridx - 1, gridx - 1, gridx - 1], [gridy - 1, gridy - 2, gridy - 3], '#0000ff', 'up')
+    return snake([gridx-1 for x in range(3)], [gridy-y for y in range(1, 4)], '#0000ff', 'up')
 
 
 class food:
@@ -248,7 +248,8 @@ def draw_timer():
     textSize(hud_height)
     textAlign(CENTER, CENTER)
 
-    text("{}:{}{}".format(time//60, time % 60//10, time % 10), width/2, hud_height/2)
+    text("{}:{}{}".format(time//60, time % 60//10, time % 10),
+         width/2, hud_height/2)
     if time <= 0:
         game_over = True
 
