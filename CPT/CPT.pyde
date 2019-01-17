@@ -100,11 +100,13 @@ class snake:
             down = 83
             left = 65
             right = 68
+            fast = 81
         elif snake == 2:
             up = 38
             down = 40
             left = 37
             right = 39
+            fast = 47
         if keycodes[up]:
             if self.dir == 'down':
                 pass
@@ -125,16 +127,10 @@ class snake:
                 pass
             else:
                 self.changedir = 'right'
-    def control_speed(self, snake):
-        if snake == 1:
-            fast = 81
-        elif snake == 2:
-            fast = 47
         if keycodes[fast]:
             self.speed = 3
         else:
             self.speed = 6
-
 
 def reset_snake1():
     return snake([2, 2, 2], [2, 3, 4], '#ff0000', 'down')
@@ -336,11 +332,9 @@ def keyPressed():
     keycodes[keyCode] = True
     snake1.control(1)
     snake2.control(2)
-    snake1.control_speed(1)
-    snake2.control_speed(2)
 
 def keyReleased():
     global snake1, snake2, keycodes
     keycodes[keyCode] = False
-    snake1.control_speed(1)
-    snake2.control_speed(2)
+    snake1.control(1)
+    snake2.control(2)
