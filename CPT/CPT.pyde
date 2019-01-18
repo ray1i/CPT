@@ -39,10 +39,12 @@ class snake:
         for i in range(len(self.x)):
             rect(self.x[i], self.y[i], pixelsize, pixelsize)
 
+#the snake moves by removing the end of the tail:
     def del_end(self):
         del self.x[0]
         del self.y[0]
 
+#and then adding another pixel to the head
     def grow(self):
         if self.dir == 'up':
             self.x.append(self.x[-1])
@@ -69,6 +71,7 @@ class snake:
             else:
                 self.x.append(self.x[-1] + pixelsize)
 
+#takes the del_end and grow and puts them together
     def move(self):
         global food
         self.dir = self.changedir
@@ -79,6 +82,7 @@ class snake:
         else:
             self.del_end()
 
+#various types of collision
     def food_collide(self, x, y):
         return self.x[-1] == x and self.y[-1] == y
 
@@ -254,6 +258,7 @@ def draw_timer():
         game_over = True
 
 
+#only called when the game is already over:
 def winner():
     if screen == 'timed':
         if snake1.score < snake2.score:
@@ -315,6 +320,7 @@ def draw():
                 game_over = True
 
 
+#only for menus:
 def mouseClicked():
     global screen, time, snake1, snake2, game_over
     if screen == 'title':
